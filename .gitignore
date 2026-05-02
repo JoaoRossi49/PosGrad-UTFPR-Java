@@ -1,0 +1,59 @@
+# ====================================================================
+# ARQUIVOS COMPRIMIDOS (REGRAS SOLICITADAS)
+# ====================================================================
+# Ignora arquivos .zip e .rar em qualquer nível de subpasta
+**/*.zip
+**/*.rar
+
+# ====================================================================
+# JAVA E COMPILAÇÃO
+# ====================================================================
+*.class
+*.log
+*.ctxt
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Pastas de saída de compilação comuns
+/target/
+/bin/
+/build/
+/out/
+
+# ====================================================================
+# FERRAMENTAS DE CONSTRUÇÃO (BUILD TOOLS)
+# ====================================================================
+# Maven
+.mvn/
+target/
+
+# Gradle
+.gradle/
+build/
+
+# ====================================================================
+# IDEs (CONFIGURAÇÕES DE AMBIENTE LOCAL)
+# ====================================================================
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.settings/
+.project
+.classpath
+.factorypath
+
+# VS Code
+.vscode/
+
+# ====================================================================
+# SISTEMA OPERACIONAL
+# ====================================================================
+.DS_Store
+Thumbs.db
