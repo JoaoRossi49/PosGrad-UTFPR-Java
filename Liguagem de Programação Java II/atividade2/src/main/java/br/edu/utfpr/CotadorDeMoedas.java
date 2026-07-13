@@ -19,22 +19,20 @@ public class CotadorDeMoedas {
 
     public List<String> lerArquivoDeMoedas(Path entrada) {
         // TODO
-        final Path arquivo = Path.of("entrada", "moedas.txt");
-
         //Se o arquivo não existir, retorna nulo
-        if(!Files.exists(arquivo)){
+        if(!Files.exists(entrada)){
             return List.of();
         }
 
         try {
 
             //Lê o arquivo
-            final List<String> todas = Files.readAllLines(arquivo);
+            final List<String> todas = Files.readAllLines(entrada);
+            return todas;
 
         } catch (Exception e){
             return List.of();
         }
-        return List.of();
     }
 
     public void cotarERegistrar(Path saida, List<String> moedas, ClienteCambio cliente) {
