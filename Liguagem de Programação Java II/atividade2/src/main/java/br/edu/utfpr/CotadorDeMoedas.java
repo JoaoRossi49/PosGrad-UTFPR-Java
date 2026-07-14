@@ -1,10 +1,12 @@
 package br.edu.utfpr;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class CotadorDeMoedas {
@@ -56,6 +58,8 @@ public class CotadorDeMoedas {
             return;
         }
 
+        var <Optional<Cotacao>>
+
         for(String moeda : moedas){
             cliente.consultar(moeda);
         }
@@ -67,5 +71,15 @@ public class CotadorDeMoedas {
 
     private void gravarEmCSV(Path saida, List<Cotacao> cotacoes) {
         // TODO
+        final Path csv = saida.resolve("cotacoes.csv");
+
+        final String conteudo = "moeda,valor\n" + cotacoes.stream()
+                .map(c -> c.moeda() + "," + c.valor())
+                .reduce("", (a, b) -> a.isEmpty() ? b : a + "\n" + b);
+        try {
+            Files.writeString(csv, conteudo);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -31,10 +31,7 @@ public class ClienteCambio {
 
             final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            IO.println("Status: " + response.statusCode());
-            IO.println("Corpo:  " + response.body());
-            IO.println("Versao: " + response.version());
-
+            return CompletableFuture.completedFuture(Optional<String>(response));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
