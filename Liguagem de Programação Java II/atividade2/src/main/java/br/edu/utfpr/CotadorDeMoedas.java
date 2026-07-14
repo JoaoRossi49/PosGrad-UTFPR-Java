@@ -2,35 +2,49 @@ package br.edu.utfpr;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Stream;
 
 public class CotadorDeMoedas {
 
     public Path verificarEntrada() {
         // TODO
-        //Ao ler o arquivo de moedas, valide se as moedas são apenas 3 letras, maiúsculas. Caso não atenda a regra, descarte
-        return Path.of("");
+        final Path arquivo = Path.of("entrada", "moedas.txt");
+
+        return arquivo;
     }
 
     public Path verificarSaida() {
         // TODO
-        return Path.of("");
+        try {
+            final Path arquivo = Path.of("saida", "cotacoes.csv");
+            if (!Files.exists(arquivo)) {
+                Files.createDirectories(arquivo.getParent());
+            }
+            return arquivo;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<String> lerArquivoDeMoedas(Path entrada) {
         // TODO
-        //Se o arquivo não existir, retorna nulo
-        if(!Files.exists(entrada)){
-            return List.of();
-        }
 
-        try {
+        List<String> retorno = new ArrayList<>();
 
-            //Lê o arquivo
-            final List<String> todas = Files.readAllLines(entrada);
-            return todas;
+        try (Stream<String> linhas = Files.lines(entrada)) {
 
-        } catch (Exception e){
+            linhas.map(String::trim)
+                    .filter(s -> !s.isBlank())
+                    .map(String::toUpperCase)
+                    .filter(s -> s.length() == 3) // codigo ISO de moeda
+                    .forEach(retorno::add);
+
+            return retorno;
+
+        } catch (Exception e) {
             return List.of();
         }
     }
@@ -41,6 +55,11 @@ public class CotadorDeMoedas {
         if(moedas.isEmpty()) {
             return;
         }
+
+        for(String moeda : moedas){
+            cliente.consultar(moeda);
+        }
+
         // TODO
 
         gravarEmCSV(saida, List.of());
