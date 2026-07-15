@@ -58,24 +58,31 @@ public class CotadorDeMoedas {
             return;
         }
 
-        for(String moeda : moedas){
-            cliente.consultar(moeda);
+        List<Cotacao> cotacoes = new ArrayList<>();
+        for (String moeda : moedas) {
+            cliente.consultar(moeda)
+                    .join()
+                    .ifPresent(cotacoes::add);
         }
 
         // TODO
-
-        gravarEmCSV(saida, List.of());
+        gravarEmCSV(saida, cotacoes);
     }
 
     private void gravarEmCSV(Path saida, List<Cotacao> cotacoes) {
         // TODO
-        final Path csv = saida.resolve("cotacoes.csv");
-
-        final String conteudo = "moeda,valor\n" + cotacoes.stream()
-                .map(c -> c.moeda() + "," + c.valor())
-                .reduce("", (a, b) -> a.isEmpty() ? b : a + "\n" + b);
         try {
-            Files.writeString(csv, conteudo);
+
+            if (!Files.exists(saida)) {
+                Files.createDirectories(saida.getParent());
+                Files.writeString(saida, "USD\nEUR\nGBP\n");
+            }
+
+            final String conteudo = "moeda,valor,coletadoEm\n" + cotacoes.stream()
+                    .map(c -> c.moeda() + "," + c.valor()+ "," + c.coletadoEm())
+                    .reduce("", (a, b) -> a.isEmpty() ? b : a + "\n" + b);
+
+            Files.writeString(saida, conteudo);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
