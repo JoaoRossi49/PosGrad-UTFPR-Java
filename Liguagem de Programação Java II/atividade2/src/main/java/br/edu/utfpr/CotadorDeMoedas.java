@@ -58,8 +58,6 @@ public class CotadorDeMoedas {
             return;
         }
 
-        var <Optional<Cotacao>>
-
         for(String moeda : moedas){
             cliente.consultar(moeda);
         }

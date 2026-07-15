@@ -1,6 +1,7 @@
 package br.edu.utfpr;
 
 import java.net.http.HttpClient;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.net.URI;
@@ -30,12 +31,18 @@ public class ClienteCambio {
                     .build();
 
             final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            final Optional<Double> Opvalor = JsonParser.extrairTaxa(response.toString(), moeda);
 
-            return CompletableFuture.completedFuture(Optional<String>(response));
+            double valor = Opvalor.orElse(0.0);
+
+            Cotacao cotacao = new Cotacao(moeda, valor, LocalDateTime.now());
+
+
+            return CompletableFuture.completedFuture(Optional.of(cotacao));
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
 
-        return CompletableFuture.completedFuture(Optional.empty());
+            return CompletableFuture.completedFuture(Optional.empty());
+
+        }
     }
 }
